@@ -15,6 +15,7 @@ from core.ISensorStream import SyntheticSensorStream
 
 
 
+
 # Model ve LLM yükle
 model = XGBRiskModel("model/xgb_model.pkl")
 model.load_model()
