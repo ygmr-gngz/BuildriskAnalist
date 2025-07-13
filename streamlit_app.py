@@ -3,17 +3,13 @@ import os
 from dotenv import load_dotenv
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-
 import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
-
-load_dotenv()  
+load_dotenv()
 from models.xgboost_model import XGBRiskModel
 from LLM.llm_report import GPTExplainer  
 from core.ISensorStream import SyntheticSensorStream
-
-
 
 
 # Model ve LLM yükle
