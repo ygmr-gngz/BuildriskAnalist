@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import xgboost as xgb
 import joblib
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
@@ -25,16 +25,35 @@ def train_and_save_model():
     X = df.drop("risk", axis=1)
     y = df["risk"]
 
-    preprocessor = ColumnTransformer([
-        ("cat", OneHotEncoder(handle_unknown="ignore"), ["yapi_turu", "zemin_sinifi"])
-    ], remainder="passthrough")
+    numeric_features = ["kat", "bina_yasi", "deprem_bolgesi"]
+    categorical_features = ["yapi_turu", "zemin_sinifi"]
 
-    pipeline = Pipeline([
-        ("pre", preprocessor),
-        ("model", xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss"))
+    numeric_transformer = Pipeline(steps=[
+        ("scaler", StandardScaler())
     ])
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    categorical_transformer = Pipeline(steps=[
+        ("encoder", OneHotEncoder(handle_unknown="ignore"))
+    ])
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_features),
+            ("cat", categorical_transformer, categorical_features),
+        ]
+    )
+
+    pipeline = Pipeline([
+        ("preprocessor", preprocessor),
+        ("model", xgb.XGBClassifier(
+            use_label_encoder=False,
+            eval_metric="logloss",
+            random_state=42
+        ))
+    ])
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42)
     pipeline.fit(X_train, y_train)
 
     os.makedirs("model", exist_ok=True)
