@@ -7,17 +7,14 @@ NETWORK_PASSPHRASE = Network.TESTNET_NETWORK_PASSPHRASE
 
 def write_risk_to_stellar(project_id: str, risk_score: float) -> str:
     """
-    Writes a simple risk result to the Stellar testnet as a transaction memo.
-
-    Returns the transaction hash so it can be shown in the UI or logs.
+    Writes the risk result to the Stellar testnet:
+    - memo: "projectId:riskScore"
+    - manageData: key = "risk-<projectId>", value = "<riskScore>"
+    Returns the transaction hash.
     """
-    # SECRET KEY'İ ASLA KODA YAZMA!
-    # Lokal ortamında STELLAR_SECRET_KEY environment variable olarak tutacağız.
     secret_key = os.environ.get("STELLAR_SECRET_KEY")
     if not secret_key:
-        raise RuntimeError(
-            "STELLAR_SECRET_KEY environment variable is not set."
-        )
+        raise RuntimeError("STELLAR_SECRET_KEY environment variable is not set.")
 
     server = Server(SERVER_URL)
     keypair = Keypair.from_secret(secret_key)
@@ -26,11 +23,14 @@ def write_risk_to_stellar(project_id: str, risk_score: float) -> str:
     # Hesap bilgilerini yükle
     account = server.load_account(public_key)
 
-    # Memo en fazla 28 karakter, o yüzden kısaltıyoruz
+    # Memo en fazla 28 karakter
     memo_text = f"{project_id}:{int(risk_score)}"
     memo_text = memo_text[:28]
 
-    # Basit bir işlem oluştur (sadece memo, token transferi yok)
+    # Manage Data key/value
+    data_key = f"risk-{project_id}"[:64]   # max 64 char
+    data_value = str(int(risk_score)).encode("utf-8")
+
     tx = (
         TransactionBuilder(
             source_account=account,
@@ -38,11 +38,12 @@ def write_risk_to_stellar(project_id: str, risk_score: float) -> str:
             base_fee=100,
         )
         .add_text_memo(memo_text)
+        .append_manage_data_op(data_name=data_key, data_value=data_value)
+        .set_timeout(300)  # TimeBounds uyarısını da çözüyor
         .build()
     )
 
     tx.sign(keypair)
     response = server.submit_transaction(tx)
-
-    # Buradan explorer’da gösterebileceğin hash’i alıyoruz
     return response["hash"]
+
