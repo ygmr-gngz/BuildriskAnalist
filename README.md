@@ -1,166 +1,206 @@
-# 🏗️ BuildRiskLLM  
-**AI-Powered Earthquake Structural Risk Assessment + Stellar Blockchain Integration**
+# BuildRiskLLM
 
-BuildRiskLLM is an AI-driven system that evaluates the post-earthquake structural safety of buildings.  
-It combines **machine learning**, **LLM-based explanations**, **synthetic sensor data**, and a **Stellar Testnet integration** that records risk results on-chain.
+**AI-Powered Post-Earthquake Structural Risk Assessment with Stellar Blockchain Integration**
 
-This project was developed for **HackStellar Hackathon** (Open Innovation Track).
+> Developed for the **HackStellar Hackathon** — Open Innovation Track
 
 ---
 
-## 🚀 Features
+## Overview
 
-### 🔹 1. ML-Based Structural Risk Prediction
-Uses an XGBoost model trained on structural parameters:
-- Number of floors  
-- Building type  
-- Soil class  
-- Building age  
-- Seismic zone  
-
-Output:
-- Binary classification (Safe / High Risk)  
-- Numerical risk score (0–100)
+BuildRiskLLM is an end-to-end intelligent system for assessing the structural safety of buildings following seismic events. It combines machine learning-based risk prediction, large language model (LLM) analysis, synthetic sensor data simulation, and immutable on-chain record-keeping via the Stellar Testnet — creating a transparent, auditable, and intelligent pipeline for disaster response and structural safety verification.
 
 ---
 
-### 🔹 2. GPT-4o Architecture Analysis  
-The system generates a **technical engineering-level explanation** using GPT-4o:
-- Structural weaknesses  
-- Ground response  
-- Failure modes  
-- Expected deformation  
-- Safety recommendations  
+## Key Features
+
+### 1. ML-Based Structural Risk Prediction
+
+A trained **XGBoost** classifier evaluates building safety using the following input parameters:
+
+| Parameter | Description |
+|---|---|
+| Number of floors | Vertical structural load factor |
+| Building type | Construction material and design class |
+| Soil class | Ground response category |
+| Building age | Construction era and code compliance |
+| Seismic zone | Regional hazard level |
+
+**Output:**
+- Binary classification: `Safe` or `High Risk`
+- Numerical risk score: `0 – 100`
 
 ---
 
-### 🔹 3. Synthetic Sensor Stream  
-A simulated sensor dataset visualized as a time series:
-- Acceleration  
-- Stress/strain  
-- Structural oscillation patterns  
+### 2. LLM-Powered Architectural Analysis (GPT-4o)
+
+For every prediction, the system generates a technical engineering-level report covering:
+
+- Identified structural weaknesses
+- Site and soil response characteristics
+- Probable failure modes and deformation patterns
+- Safety recommendations and intervention priorities
 
 ---
 
-### 🔹 4. Stellar Testnet Integration (Blockchain)  
-Risk scores can be **saved to Stellar Testnet** with a single button.
+### 3. Synthetic Sensor Data Stream
 
-Stored on-chain:
-- Memo: `projectId:riskScore`  
-- ManageData: `"risk-projectId" = riskScore`
+Simulated time-series sensor data is generated and visualized in real time, including:
 
-Returns:
-- Transaction hash  
-- Direct link to Stellar Expert Explorer  
+- Acceleration measurements
+- Stress and strain readings
+- Structural oscillation patterns
 
-This provides **auditability**, **immutability**, and **tamper-proof transparency**.
+This enables realistic testing and demonstration without requiring physical IoT infrastructure.
 
 ---
 
-## 🛠️ Tech Stack
+### 4. Stellar Testnet Integration (Blockchain Auditability)
+
+Risk assessment results are committed to the **Stellar Testnet** with a single click, providing an immutable, tamper-resistant public record.
+
+**On-chain data stored:**
+
+```
+Memo:        projectId:riskScore
+ManageData:  "risk-{projectId}" → riskScore
+```
+
+**Returns:**
+- Transaction hash
+- Direct link to Stellar Expert Explorer for independent verification
+
+This mechanism ensures **auditability**, **immutability**, and **transparency** — critical properties for insurance verification, government compliance, and disaster response coordination.
+
+---
+
+## Technology Stack
 
 | Layer | Technologies |
-|-------|--------------|
-| **UI** | Streamlit |
-| **AI/ML** | XGBoost, Pandas, Scikit-Learn |
-| **LLM** | GPT-4o (OpenAI API) |
-| **Blockchain** | Stellar Testnet, Stellar SDK |
-| **DevOps** | Python 3.10+, dotenv |
+|---|---|
+| Frontend / UI | Streamlit |
+| Machine Learning | XGBoost, Scikit-Learn, Pandas |
+| LLM Analysis | GPT-4o via OpenAI API |
+| Blockchain | Stellar Testnet, Stellar Python SDK |
+| Configuration | Python 3.10+, python-dotenv |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
-buildriskanalist/
+```
+BuildRiskAnalist/
 │
-├── streamlit_app.py # Main app (UI + ML + LLM + Stellar)
-├── model/xgb_model.pkl # Trained ML model
-├── LLM/llm_report.py # GPT model wrapper
-├── core/ # Synthetic sensor generator
+├── streamlit_app.py          # Main application — UI, ML inference, LLM, Stellar
+├── model/
+│   └── xgb_model.pkl         # Trained XGBoost model
+├── LLM/
+│   └── llm_report.py         # GPT-4o wrapper for structured report generation
+├── core/
+│   └── sensor_generator.py   # Synthetic sensor data generation
 ├── src/blockchain/
-│ ├── stellar_client.py # Stellar connection test
-│ └── risk_writer.py # Writes risk results to Stellar
-└── requirements.txt
-
+│   ├── stellar_client.py     # Stellar network connection handler
+│   └── risk_writer.py        # Writes risk scores to Stellar Testnet
+├── requirements.txt
+└── .env.example
+```
 
 ---
 
-## ⚙️ Installation
+## Getting Started
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/ygmr-gngz/BuildRiskAnalist.git
 cd BuildRiskAnalist
+```
 
+### 2. Create and Activate Virtual Environment
+
+```bash
 python -m venv venv
-source venv/Scripts/activate   # Windows (Git Bash)
 
+# macOS / Linux
+source venv/bin/activate
+
+# Windows (Git Bash)
+source venv/Scripts/activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-🔐 Environment Variables
+### 4. Configure Environment Variables
 
-Create a .env file:
+Create a `.env` file in the project root:
 
-OPENAI_API_KEY=your_openai_key
-STELLAR_SECRET_KEY=your_stellar_secret
+```env
+OPENAI_API_KEY=your_openai_api_key
+STELLAR_SECRET_KEY=your_stellar_secret_key
+```
 
+> Fund your Stellar Testnet account before running:
+> [Stellar Laboratory — Account Creator (Testnet)](https://laboratory.stellar.org/#account-creator?network=testnet)
 
-Fund your Stellar Testnet account:
-https://laboratory.stellar.org/#account-creator?network=testnet
-▶️ Run the App
+### 5. Run the Application
+
+```bash
 streamlit run streamlit_app.py
+```
 
-🌐 On-Chain Demo
+---
 
-After risk prediction, click:
+## On-Chain Verification
 
-💾 Save risk result to Stellar Testnet
+After generating a risk prediction, click **"Save risk result to Stellar Testnet"**.
 
+The application will return:
 
-The app provides:
+- A **transaction hash** confirming the write operation
+- A **Stellar Expert Explorer link** for independent, public verification
 
-Transaction hash
+```
+https://stellar.expert/explorer/testnet/tx/<your_tx_hash>
+```
 
-Explorer link
+Any party — insurers, engineers, municipal authorities — can verify the record without relying on the application itself.
 
-Verifiable on-chain record of the building’s risk score
+---
 
-Example:
-https://stellar.expert/explorer/testnet/tx/
-<your_tx_hash>
+## Hackathon Evaluation Criteria
 
-🧠 How This Meets Hackathon Criteria
-✔️ Orijinallik
+| Criterion | How BuildRiskLLM Addresses It |
+|---|---|
+| **Originality** | Novel combination of XGBoost, GPT-4o analysis, synthetic sensors, and Stellar blockchain for a real-world safety use case |
+| **Deployment** | Fully operational Stellar Testnet integration with live transaction output |
+| **Scope** | Implements Memo + ManageData operations using the Stellar SDK within a clean, modular architecture |
+| **Technical Quality** | Well-organized codebase, separation of concerns, documented modules, stable MVP |
+| **User Experience** | Intuitive Streamlit UI, real-time charts, one-click blockchain commit |
+| **Readiness** | End-to-end functional pipeline; extensible to physical sensor inputs |
+| **Impact Potential** | Applicable to disaster response, post-earthquake building inspection, insurance verification, and regulatory compliance |
 
-Combines ML, LLM explanation, synthetic sensors + Stellar blockchain auditability.
+---
 
-✔️ Deployment
+## Potential Impact
 
-Fully operational Stellar Testnet integration.
+BuildRiskLLM addresses a critical gap in disaster response infrastructure: the need for fast, transparent, and verifiable structural safety assessments at scale. By anchoring AI predictions to an immutable blockchain record, the system enables:
 
-✔️ Kapsam
+- **Emergency responders** to prioritize evacuation and inspection resources
+- **Insurance companies** to access tamper-proof risk data
+- **Municipal governments** to maintain auditable building safety registries
+- **Engineers** to receive structured AI-assisted analysis for rapid field decisions
 
-Uses Memo + ManageData operations, Stellar SDK, and clean modular structure.
+---
 
-✔️ Teknik Kalite
+## License
 
-Well-organized architecture, documented Python code, stable MVP.
+This project is released under the [MIT License](LICENSE).
 
-✔️ Kullanıcı Deneyimi
+---
 
-Clear UI, real-time charts, one-click blockchain save.
-
-✔️ Hazır Olma Durumu
-
-End-to-end working pipeline; extendable to real sensor inputs.
-
-✔️ Potansiyel Etki
-
-Useful for disaster response, building safety assessments, insurance verification.
-
-🏁 Conclusion
-
-BuildRiskLLM demonstrates how AI + Blockchain can support public safety after earthquakes.
-It brings transparency, auditability, and intelligence to structural risk analysis.
-
-✨ Thanks for reviewing our project!
+*BuildRiskLLM — Where artificial intelligence meets structural integrity, secured by blockchain.*
 
